@@ -1,0 +1,87 @@
+{
+    "position": "top",
+    "layer": "overlay",
+    "height": 40,
+    "margin-top": 10,
+    "margin-left": 15,
+    "margin-right": 15,
+    "reload_style_on_change": true,
+    "reverse-direction": true,
+    "modules-left": [
+        "network",
+        "bluetooth"
+    ],
+    "modules-center": [
+        "hyprland/workspaces"
+    ],
+    "modules-right": [
+        "hyprland/submap",
+        "tray",
+        "pulseaudio",
+        "battery",
+        "hyprland/language",
+        "clock",
+        "custom/power"
+    ],
+    "bluetooth": {
+        "format-disabled": "",
+        "format-enabled": "\uf294",
+        "format-connected": "\uf294  {device_alias}",
+        "format-paused": "\uf294",
+        "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+        "on-click": "bluetoothctl power toggle"
+    },
+    "network": {
+        "format-wifi": "\uf1eb  {essid}",
+        "format-ethernet": "\uf1eb  {ifname}",
+        "format-disconnected": "\uf127  No net",
+        "tooltip-format": "{ifname}: {ipaddr}",
+        "max-length": 20,
+        "on-click": "nm-connection-editor"
+    },
+    "pulseaudio": {
+        "format": "{icon}   {volume}%",
+        "format-icons": ["\uf026", "\uf027", "\uf027", "\uf028", "\uf028", "\uf028", "\uf028", "\uf028"],
+        "format-muted": "\uf026  x",
+        "on-click": "pavucontrol"
+    },
+    "battery": {
+        "interval": 3,
+        "states": {
+            "critical": 15
+        },
+        "format": "{icon}   {capacity}%",
+        "format-icons": ["\uf244", "\uf243", "\uf242", "\uf241", "\uf240"],
+        "format-plugged": "\uf1e6 {capacity}",
+        "max-length": 25
+    },
+    "tray": {
+        "spacing": 10
+    },
+    "clock": {
+        "format": "\uf017   {:%a %d %b %H:%M}",
+        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+        "format-alt": "\uf073   {:%d-%m-%Y %H:%M}"
+    },
+    "hyprland/language": {
+        "format": "\uf11c   {}",
+        "format-en": "en",
+        "format-ru": "ru"
+    },
+    "hyprland/submap": {
+        "format": " {} "
+    },
+    "hyprland/workspaces": {
+        "all-outputs": false,
+        "format": "{icon}",
+        "sort-by-number": true,
+        "max-workspaces": 0
+    },
+    "custom/power": {
+        "format": "\uf011",
+        "tooltip": false,
+        "on-click": "wlogout",
+        "on-click-right": "systemctl suspend",
+        "on-click-middle": "hyprlock"
+    }
+}

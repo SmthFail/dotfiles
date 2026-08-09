@@ -1,0 +1,159 @@
+@define-color bg #16161e;
+@define-color bg-alt #1e1e2e;
+@define-color fg #cdd6f4;
+@define-color fg-dim #6c7086;
+@define-color accent #33ccff;
+
+* {
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-size: 14px;
+    color: @fg;
+}
+
+#waybar {
+    background: transparent;
+}
+
+#control-center {
+    background: @bg;
+    border-radius: 16px;
+    border: 1px solid @bg-alt;
+    padding: 12px;
+}
+
+#notifications {
+    background: transparent;
+    border-radius: 12px;
+    padding: 6px;
+}
+
+.notification-row {
+    outline: none;
+    background: transparent;
+    border-radius: 12px;
+}
+
+.notification-row:hover {
+    background: @bg-alt;
+}
+
+.notification {
+    background: @bg;
+    border-radius: 12px;
+    border: 1px solid @bg-alt;
+    padding: 8px;
+}
+
+.notification.critical {
+    border: 1px solid #ff5555;
+}
+
+.notification .notification-action-button {
+    background: @bg-alt;
+    border-radius: 8px;
+    color: @fg;
+}
+
+.notification .notification-action-button:hover {
+    background: @accent;
+    color: @bg;
+}
+
+.notification .notification-default-action:hover,
+.notification-action:hover,
+.notification-content:hover {
+    background: @bg-alt;
+}
+
+#dnd {
+    background: @bg-alt;
+    border-radius: 12px;
+    color: @fg;
+}
+
+#dnd button {
+    background: transparent;
+    border-radius: 8px;
+    color: @fg;
+}
+
+#dnd button:hover {
+    background: @accent;
+    color: @bg;
+}
+
+#title {
+    background: transparent;
+    color: @fg;
+}
+
+#title button {
+    background: @bg-alt;
+    border-radius: 8px;
+    color: @fg;
+}
+
+#title button:hover {
+    background: @accent;
+    color: @bg;
+}
+
+#mpris {
+    background: @bg-alt;
+    border-radius: 12px;
+    padding: 8px;
+}
+
+#mpris button {
+    background: transparent;
+    color: @fg;
+    border-radius: 8px;
+}
+
+#mpris button:hover {
+    background: @accent;
+    color: @bg;
+}
+
+#volume {
+    background: @bg-alt;
+    border-radius: 12px;
+    padding: 8px;
+}
+
+#volume slider {
+    background: @accent;
+}
+
+#volume scale trough {
+    background: #2a2a38;
+    border-radius: 4px;
+}
+
+#volume scale highlight {
+    background: @accent;
+    border-radius: 4px;
+}
+
+.widget-buttons-grid {
+    background: @bg;
+    border-radius: 12px;
+}
+
+.widget-buttons-grid > button {
+    background: @bg-alt;
+    color: @fg;
+    border-radius: 10px;
+    border: none;
+    margin: 4px;
+}
+
+.widget-buttons-grid > button:hover {
+    background: @accent;
+    color: @bg;
+}
+
+.widget-buttons-grid > button:active {
+    background: #2596be;
+    color: @bg;
+}

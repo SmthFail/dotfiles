@@ -1,0 +1,79 @@
+@import url("../colors.css");
+
+* {
+    font-family: "JetBrainsMono Nerd Font", monospace;
+    font-size: 14px;
+    color: @--color-fg;
+}
+
+window#waybar {
+    background: transparent;
+    border: none;
+    border-radius: 20px;
+}
+
+.horizontal .modules-left,
+.horizontal .modules-center,
+.horizontal .modules-right {
+    background: @--color-bg;
+    border-radius: 20px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+box .modules-left > :not(:last-child) > label {
+    padding-right: 10px;
+    border-image: linear-gradient(transparent, @--color-accent, transparent) 0 1 0 0 / 1px 1px 1px 1px;
+}
+
+#bluetooth {
+    padding-left: 14px;
+}
+
+box .modules-right > :not(:last-child) > label {
+    padding-left: 10px;
+    padding-right: 10px;
+    border-image: linear-gradient(transparent, @--color-accent, transparent) 0 1 0 0 / 1px 1px 1px 1px;
+}
+
+box .modules-right > :last-child > label {
+    padding-left: 10px;
+}
+
+box .modules-right {
+    padding-right: 10px;
+}
+
+#tray menu {
+    background: @--color-bg;
+    color: @--color-fg;
+}
+
+#workspaces button {
+    border-radius: 0;
+    border-bottom: solid 2px transparent;
+    padding-left: 6px;
+    padding-right: 6px;
+    min-width: 20px;
+}
+
+#workspaces button:hover {
+    color: @--color-accent;
+}
+
+#workspaces button.active {
+    border-bottom: solid 2px @--color-accent;
+}
+
+#battery.critical:not(.charging) {
+    color: @--color-accent;
+}
+
+#custom-power {
+    color: @--color-accent;
+    padding-right: 14px;
+}
+
+#custom-power:hover {
+    color: @--color-fg;
+}
