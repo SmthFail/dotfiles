@@ -5,7 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-CONFIG = Path.home() / ".config" / "hypr" / "hyprland.lua"
+CONFIG = Path.home() / ".config" / "hypr" / "hyprland" / "keybinds.lua"
 
 PROGRAMS = {
     "terminal": "Open terminal",
@@ -41,7 +41,8 @@ def normalize_combo(expr, main_mod):
             piece = piece.strip()
             if piece:
                 parts.append(piece)
-    return " + ".join(parts)
+    combo = " + ".join(parts)
+    return combo.replace("SHIFT + slash", "?")
 
 
 def describe(dsp, args):
@@ -51,6 +52,12 @@ def describe(dsp, args):
             return "Exit Hyprland"
         if "show-binds" in arg:
             return "Show keybind help"
+        if "screenshot.sh area" in arg:
+            return "Screenshot area"
+        if "screenshot.sh full" in arg:
+            return "Screenshot fullscreen"
+        if "screenshot.sh edit" in arg:
+            return "Screenshot area and edit"
         if arg in PROGRAMS:
             return PROGRAMS[arg]
         return f"Run: {arg[:48]}"

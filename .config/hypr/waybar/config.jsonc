@@ -8,7 +8,8 @@
     "reload_style_on_change": true,
     "reverse-direction": true,
     "modules-left": [
-        "network",
+        "network#wifi",
+        "network#ethernet",
         "bluetooth"
     ],
     "modules-center": [
@@ -31,10 +32,20 @@
         "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
         "on-click": "bluetoothctl power toggle"
     },
-    "network": {
+    "network#wifi": {
+        "interface": "wlp5s0",
         "format-wifi": "\uf1eb  {essid}",
-        "format-ethernet": "\uf1eb  {ifname}",
+        "format-ethernet": "",
         "format-disconnected": "\uf127  No net",
+        "tooltip-format": "{ifname}: {ipaddr}",
+        "max-length": 20,
+        "on-click": "nm-connection-editor"
+    },
+    "network#ethernet": {
+        "interface": "enp4s0",
+        "format-wifi": "",
+        "format-ethernet": "\udb80\udf19  {ifname}",
+        "format-disconnected": "",
         "tooltip-format": "{ifname}: {ipaddr}",
         "max-length": 20,
         "on-click": "nm-connection-editor"

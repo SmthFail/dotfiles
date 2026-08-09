@@ -30,6 +30,10 @@ box .modules-left > :not(:last-child) > label {
     padding-left: 14px;
 }
 
+#network.ethernet {
+    padding-left: 14px;
+}
+
 box .modules-right > :not(:last-child) > label {
     padding-left: 10px;
     padding-right: 10px;
