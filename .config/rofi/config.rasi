@@ -1,0 +1,113 @@
+* {
+    font: "JetBrainsMono Nerd Font 12";
+    bg: #16161e;
+    bg-soft: #1e1e28;
+    fg: #cdd6f4;
+    accent: #33ccff;
+
+    normal-background: @bg;
+    normal-foreground: @fg;
+    alternate-normal-background: @bg;
+    alternate-normal-foreground: @fg;
+
+    selected-normal-background: rgba(51, 204, 255, 0.15);
+    selected-normal-foreground: @fg;
+
+    active-background: @bg;
+    active-foreground: @accent;
+    alternate-active-background: @bg;
+    alternate-active-foreground: @accent;
+    selected-active-background: rgba(51, 204, 255, 0.15);
+    selected-active-foreground: @fg;
+
+    urgent-background: @bg;
+    urgent-foreground: @accent;
+    alternate-urgent-background: @bg;
+    alternate-urgent-foreground: @accent;
+    selected-urgent-background: rgba(51, 204, 255, 0.15);
+    selected-urgent-foreground: @fg;
+}
+
+configuration {
+    show-icons: true;
+    icon-theme: "Yaru-dark";
+    drun-display-format: "{name}";
+    disable-history: true;
+}
+
+window {
+    width: 45%;
+    location: center;
+    anchor: center;
+    border: 2px;
+    border-color: @accent;
+    border-radius: 20px;
+    background-color: @bg;
+    padding: 12px;
+}
+
+mainbox {
+    background-color: @bg;
+}
+
+inputbar {
+    background-color: @bg-soft;
+    border-radius: 12px;
+    padding: 8px 14px;
+    spacing: 8px;
+    children: [prompt, entry];
+}
+
+prompt {
+    enabled: false;
+}
+
+entry {
+    text-color: @fg;
+}
+
+listview {
+    background-color: @bg;
+    padding: 8px 0 0 0;
+    spacing: 4px;
+}
+
+element {
+    background-color: transparent;
+    padding: 10px;
+    border-radius: 12px;
+    text-color: @fg;
+    spacing: 12px;
+}
+
+element selected {
+    background-color: rgba(51, 204, 255, 0.15);
+    text-color: @fg;
+}
+
+element normal.normal,
+element alternate.normal,
+element normal.active,
+element alternate.active,
+element normal.urgent,
+element alternate.urgent {
+    background-color: @bg;
+    text-color: @fg;
+}
+
+element selected.normal,
+element selected.active,
+element selected.urgent {
+    background-color: rgba(51, 204, 255, 0.15);
+    text-color: @fg;
+}
+
+element-icon {
+    background-color: transparent;
+    size: 24px;
+}
+
+element-text {
+    background-color: transparent;
+    text-color: @fg;
+}
