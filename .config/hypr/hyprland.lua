@@ -76,6 +76,13 @@ hl.config({
     animations = {
         enabled = true,
     },
+
+    misc = {
+        -- Без этого погашенный по idle монитор (hypridle -> dpms off) не включается
+        -- ни клавиатурой, ни движением мыши.
+        key_press_enables_dpms  = true,
+        mouse_move_enables_dpms = true,
+    },
 })
 
 -- Default curves and animations, see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Animations/

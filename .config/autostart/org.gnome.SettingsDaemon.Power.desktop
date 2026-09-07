@@ -1,0 +1,14 @@
+[Desktop Entry]
+# Глушим gnome-settings-daemon power в Hyprland-сессии.
+#
+# Зачем: gsd-power поднимается в этой сессии через XDG autostart и пытается
+# обрабатывать бездействие/яркость/сон параллельно с hypridle, а в момент засыпания
+# пишет в журнал: "Unable to inhibit suspend: GDBus.Error:...OperationInProgress"
+# (конкуренция за logind-ингибитор сна).
+#
+# Откат: удалить этот файл и перезапустить сессию.
+Type=Application
+Hidden=true
+X-GNOME-Autostart-enabled=false
+Name=org.gnome.SettingsDaemon.Power (disabled in Hyprland)
+Comment=Disabled because hypridle handles idle/sleep in this session

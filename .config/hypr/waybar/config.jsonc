@@ -1,6 +1,7 @@
 {
     "position": "top",
-    "layer": "overlay",
+    "layer": "top",
+    "exclusive": true,
     "height": 40,
     "margin-top": 10,
     "margin-left": 15,
@@ -93,6 +94,6 @@
         "tooltip": false,
         "on-click": "wlogout",
         "on-click-right": "systemctl suspend",
-        "on-click-middle": "hyprlock"
+        "on-click-middle": "loginctl lock-session"
     }
 }

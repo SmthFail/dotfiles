@@ -1,0 +1,20 @@
+# graphical-session.target в systemd помечен RefuseManualStart=yes — его нельзя поднять
+# напрямую (`systemctl --user start graphical-session.target` = "Operation refused"),
+# но можно как чужую зависимость. Этот юнит и есть тот «кто-то»: его поднимает Hyprland
+# из startup.lua, а за ним поднимаются hypridle/waybar/swaync/hyprpaper/hyprsunset
+# (включены пакетом через /etc/systemd/user/graphical-session.target.wants).
+#
+# RemainAfterExit=yes нужен из-за StopWhenUnneeded=yes у target: пока этот юнит активен,
+# target считается нужным и не гаснет.
+
+[Unit]
+Description=Pull graphical-session.target into the Hyprland session
+Wants=graphical-session.target
+After=graphical-session-pre.target
+Before=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/true
