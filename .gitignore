@@ -1,1 +1,9 @@
 .config/hypr/scripts/__pycache__/
+
+# opencode: secrets, runtime files, staging/agent dirs
+.config/opencode/service.json
+.config/opencode/cli.json
+.config/opencode/test/
+.config/opencode/.agent/
+.config/opencode/package.json
+.config/opencode/package-lock.json

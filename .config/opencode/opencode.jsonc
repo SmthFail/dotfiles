@@ -1,0 +1,282 @@
+{
+  // ГОТОВЫЙ ФАЙЛ ЦЕЛИКОМ — замена ~/.config/opencode/opencode.jsonc.
+  // Твои provider / model / small_model перенесены дословно.
+  // Если не хочешь заменять файл целиком — влей вручную 3 ключа из
+  // opencode.agents.fragment.jsonc: default_agent, permissions, agents.
+  // Перед заменой: cp ~/.config/opencode/opencode.jsonc ~/.config/opencode/opencode.jsonc.bak
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "GPU_0123": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Local vLLM",
+      "options": {
+        "baseURL": "http://10.55.228.60:8003/v1",
+        "apiKey": "EMPTY",
+        "max_tokens": 131072,
+        "extraBody": { "reasoning_effort": "high" }
+      },
+      "models": {
+        "GLM-5.3-Flash-NVFP4": {
+
+          "name": "GLM-5.3-Flash",
+          "attachment": true,
+          "limit": {
+            "context": 1048576,
+            "output": 131072
+          },
+          "modalities": {
+            "input": ["text", "image"],
+            "output": ["text"]
+          }
+        }
+      }
+    },
+    "GPU_45": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Local vLLM",
+      "options": {
+        "baseURL": "http://10.55.228.60:8002/v1",
+        "apiKey": "EMPTY",
+        "max_tokens": 131072,
+        "extraBody": { "reasoning_effort": "medium" }
+      },
+      "models": {
+        "Qwen3.8-Flash-Next_GPU4": {
+          "name": "Qwen3.8-Flash-Next",
+          "attachment": true,
+          "limit": {
+            "context": 262144,
+            "output": 131072
+          },
+          "modalities": {
+            "input": ["text", "image"],
+            "output": ["text"]
+          }
+        }
+      }
+    }
+  },
+  "model": "GPU_0123/GLM-5.3-Flash-NVFP4",
+  "small_model": "GPU_45/Qwen3.8-Flash-Next_GPU4",
+
+  // ════════════════════════════════════════════════════════════════════════
+  // КАРКАС АГЕНТНОЙ СХЕМЫ
+  // Порядок совпадений: база OpenCode ("разрешено всё", external_directory→ask,
+  // *.env→ask) → глобальные permissions → правила агента. Выигрывает ПОСЛЕДНЕЕ
+  // совпадение, поэтому широкое правило идёт первым, allow — после, deny — в конце.
+  // ════════════════════════════════════════════════════════════════════════
+  "default_agent": "build",
+
+  "permissions": [
+    { "action": "read", "resource": "*.env", "effect": "deny" },
+    { "action": "read", "resource": "*.env.*", "effect": "deny" },
+    { "action": "read", "resource": "*.env.example", "effect": "allow" },
+
+    { "action": "shell", "resource": "git push*", "effect": "deny" },
+    { "action": "shell", "resource": "git reset --hard*", "effect": "deny" },
+    { "action": "shell", "resource": "git clean -fd*", "effect": "deny" },
+    { "action": "shell", "resource": "rm -rf*", "effect": "deny" },
+    { "action": "shell", "resource": "sudo*", "effect": "deny" },
+
+    { "action": "edit", "resource": "**/target/**", "effect": "deny" },
+    { "action": "edit", "resource": "**/node_modules/**", "effect": "deny" },
+    { "action": "edit", "resource": "**/__pycache__/**", "effect": "deny" },
+    { "action": "edit", "resource": "**/.venv/**", "effect": "deny" },
+    { "action": "edit", "resource": "**/.venv*/**", "effect": "deny" },
+    { "action": "edit", "resource": "**/*.egg-info/**", "effect": "deny" },
+    { "action": "edit", "resource": "UnrealProject/Binaries/**", "effect": "deny" },
+    { "action": "edit", "resource": "UnrealProject/Intermediate/**", "effect": "deny" },
+    { "action": "edit", "resource": "UnrealProject/Saved/**", "effect": "deny" },
+    { "action": "edit", "resource": "UnrealProject/DerivedDataCache/**", "effect": "deny" },
+    { "action": "edit", "resource": "UnrealProject/Build/**", "effect": "deny" }
+  ],
+
+  "agents": {
+    "build": {
+      "model": "GPU_0123/GLM-5.3-Flash-NVFP4",
+      "permissions": [
+        { "action": "subagent", "resource": "*", "effect": "deny" },
+        { "action": "subagent", "resource": "cartographer", "effect": "allow" },
+        { "action": "subagent", "resource": "scout", "effect": "allow" },
+        { "action": "subagent", "resource": "writer", "effect": "allow" },
+        { "action": "subagent", "resource": "verifier", "effect": "allow" },
+        { "action": "subagent", "resource": "reviewer", "effect": "allow" },
+        { "action": "subagent", "resource": "general", "effect": "ask" },
+        { "action": "subagent", "resource": "explore", "effect": "ask" },
+
+        { "action": "grep", "resource": "*", "effect": "deny" },
+        { "action": "glob", "resource": "*", "effect": "deny" },
+        { "action": "webfetch", "resource": "*", "effect": "deny" },
+        { "action": "websearch", "resource": "*", "effect": "deny" },
+        { "action": "skill", "resource": "*", "effect": "deny" },
+
+        { "action": "shell", "resource": "*", "effect": "deny" },
+        { "action": "shell", "resource": "git status*", "effect": "allow" },
+        { "action": "shell", "resource": "git diff*", "effect": "allow" },
+
+        { "action": "edit", "resource": "*", "effect": "deny" },
+        { "action": "edit", "resource": ".agent/**", "effect": "allow" },
+
+        { "action": "question", "resource": "*", "effect": "allow" },
+        { "action": "execute", "resource": "*", "effect": "allow" },
+        { "action": "read", "resource": "*", "effect": "allow" }
+      ]
+    },
+
+    "plan": {
+      "model": "GPU_0123/GLM-5.3-Flash-NVFP4",
+      "permissions": [
+        { "action": "subagent", "resource": "*", "effect": "deny" },
+        { "action": "subagent", "resource": "cartographer", "effect": "allow" },
+        { "action": "subagent", "resource": "scout", "effect": "allow" },
+        { "action": "subagent", "resource": "verifier", "effect": "allow" },
+        { "action": "subagent", "resource": "reviewer", "effect": "allow" },
+        { "action": "subagent", "resource": "general", "effect": "ask" },
+        { "action": "subagent", "resource": "explore", "effect": "ask" },
+
+        { "action": "grep", "resource": "*", "effect": "deny" },
+        { "action": "glob", "resource": "*", "effect": "deny" },
+        { "action": "webfetch", "resource": "*", "effect": "deny" },
+        { "action": "websearch", "resource": "*", "effect": "deny" },
+        { "action": "skill", "resource": "*", "effect": "deny" },
+
+        { "action": "shell", "resource": "*", "effect": "deny" },
+        { "action": "shell", "resource": "git status*", "effect": "allow" },
+        { "action": "shell", "resource": "git diff*", "effect": "allow" },
+
+        { "action": "edit", "resource": "*", "effect": "deny" },
+        { "action": "edit", "resource": "$HOME/.opencode/plan/*", "effect": "allow" },
+
+        { "action": "question", "resource": "*", "effect": "allow" },
+        { "action": "execute", "resource": "*", "effect": "allow" },
+        { "action": "read", "resource": "*", "effect": "allow" }
+      ]
+    },
+
+    "cartographer": {
+      "mode": "subagent",
+      "model": "GPU_45/Qwen3.8-Flash-Next_GPU4",
+      "steps": 12,
+      "permissions": [
+        { "action": "edit", "resource": "*", "effect": "deny" },
+        { "action": "edit", "resource": ".agent/notes/**", "effect": "allow" },
+        { "action": "shell", "resource": "*", "effect": "ask" },
+        { "action": "shell", "resource": "rm -rf*", "effect": "deny" },
+        { "action": "subagent", "resource": "*", "effect": "deny" },
+        { "action": "question", "resource": "*", "effect": "deny" },
+        { "action": "execute", "resource": "*", "effect": "deny" },
+        { "action": "webfetch", "resource": "*", "effect": "deny" },
+        { "action": "websearch", "resource": "*", "effect": "deny" },
+        { "action": "skill", "resource": "*", "effect": "deny" },
+        { "action": "skill", "resource": "rust", "effect": "allow" },
+        { "action": "skill", "resource": "python", "effect": "allow" },
+        { "action": "skill", "resource": "ue-cpp", "effect": "allow" }
+      ]
+    },
+
+    "scout": {
+      "mode": "subagent",
+      "model": "GPU_45/Qwen3.8-Flash-Next_GPU4",
+      "steps": 8,
+      "permissions": [
+        { "action": "edit", "resource": "*", "effect": "deny" },
+        { "action": "edit", "resource": ".agent/notes/**", "effect": "allow" },
+        { "action": "shell", "resource": "*", "effect": "deny" },
+        { "action": "subagent", "resource": "*", "effect": "deny" },
+        { "action": "question", "resource": "*", "effect": "deny" },
+        { "action": "execute", "resource": "*", "effect": "deny" },
+        { "action": "webfetch", "resource": "*", "effect": "allow" },
+        { "action": "websearch", "resource": "*", "effect": "allow" },
+        { "action": "skill", "resource": "*", "effect": "deny" },
+        { "action": "skill", "resource": "rust", "effect": "allow" },
+        { "action": "skill", "resource": "python", "effect": "allow" },
+        { "action": "skill", "resource": "ue-cpp", "effect": "allow" }
+      ]
+    },
+
+    "writer": {
+      "mode": "subagent",
+      "model": "GPU_0123/GLM-5.3-Flash-NVFP4",
+      "steps": 16,
+      "permissions": [
+        { "action": "edit", "resource": "*", "effect": "ask" },
+        { "action": "edit", "resource": "external/**", "effect": "deny" },
+        { "action": "edit", "resource": "**/dist/**", "effect": "deny" },
+        { "action": "edit", "resource": "**/build/**", "effect": "deny" },
+        { "action": "edit", "resource": "**/.git/**", "effect": "deny" },
+
+        { "action": "shell", "resource": "*", "effect": "ask" },
+        { "action": "shell", "resource": "git commit*", "effect": "deny" },
+        { "action": "shell", "resource": "git checkout*", "effect": "deny" },
+        { "action": "shell", "resource": "git switch*", "effect": "deny" },
+        { "action": "shell", "resource": "git stash*", "effect": "deny" },
+
+        { "action": "subagent", "resource": "*", "effect": "deny" },
+        { "action": "question", "resource": "*", "effect": "deny" },
+        { "action": "execute", "resource": "*", "effect": "deny" },
+        { "action": "webfetch", "resource": "*", "effect": "deny" },
+        { "action": "websearch", "resource": "*", "effect": "deny" },
+        { "action": "skill", "resource": "*", "effect": "deny" },
+        { "action": "skill", "resource": "rust", "effect": "allow" },
+        { "action": "skill", "resource": "python", "effect": "allow" },
+        { "action": "skill", "resource": "ue-cpp", "effect": "allow" }
+      ]
+    },
+
+    "verifier": {
+      "mode": "subagent",
+      "model": "GPU_45/Qwen3.8-Flash-Next_GPU4",
+      "steps": 10,
+      "permissions": [
+        { "action": "edit", "resource": "*", "effect": "deny" },
+        { "action": "edit", "resource": ".agent/verdicts/**", "effect": "allow" },
+
+        { "action": "shell", "resource": "*", "effect": "ask" },
+        { "action": "shell", "resource": "cargo test*", "effect": "allow" },
+        { "action": "shell", "resource": "cargo clippy*", "effect": "allow" },
+        { "action": "shell", "resource": "cargo fmt*", "effect": "allow" },
+        { "action": "shell", "resource": "pytest*", "effect": "allow" },
+        { "action": "shell", "resource": "python -m pytest*", "effect": "allow" },
+        { "action": "shell", "resource": "ruff*", "effect": "allow" },
+        { "action": "shell", "resource": "mypy*", "effect": "allow" },
+        { "action": "shell", "resource": "git diff*", "effect": "allow" },
+        { "action": "shell", "resource": "git status*", "effect": "allow" },
+
+        { "action": "subagent", "resource": "*", "effect": "deny" },
+        { "action": "question", "resource": "*", "effect": "deny" },
+        { "action": "execute", "resource": "*", "effect": "deny" },
+        { "action": "webfetch", "resource": "*", "effect": "deny" },
+        { "action": "websearch", "resource": "*", "effect": "deny" },
+        { "action": "skill", "resource": "*", "effect": "deny" },
+        { "action": "skill", "resource": "rust", "effect": "allow" },
+        { "action": "skill", "resource": "python", "effect": "allow" },
+        { "action": "skill", "resource": "ue-cpp", "effect": "allow" }
+      ]
+    },
+
+    "reviewer": {
+      "mode": "subagent",
+      "model": "GPU_45/Qwen3.8-Flash-Next_GPU4",
+      "steps": 8,
+      "permissions": [
+        { "action": "edit", "resource": "*", "effect": "deny" },
+        { "action": "edit", "resource": ".agent/verdicts/**", "effect": "allow" },
+        { "action": "shell", "resource": "*", "effect": "deny" },
+        { "action": "shell", "resource": "git diff*", "effect": "allow" },
+        { "action": "shell", "resource": "git status*", "effect": "allow" },
+        { "action": "subagent", "resource": "*", "effect": "deny" },
+        { "action": "question", "resource": "*", "effect": "deny" },
+        { "action": "execute", "resource": "*", "effect": "deny" },
+        { "action": "webfetch", "resource": "*", "effect": "deny" },
+        { "action": "websearch", "resource": "*", "effect": "deny" },
+        { "action": "skill", "resource": "*", "effect": "deny" },
+        { "action": "skill", "resource": "rust", "effect": "allow" },
+        { "action": "skill", "resource": "python", "effect": "allow" },
+        { "action": "skill", "resource": "ue-cpp", "effect": "allow" }
+      ]
+    },
+
+    "general": { "hidden": true },
+    "explore": { "hidden": true }
+  }
+}
