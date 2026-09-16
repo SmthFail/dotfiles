@@ -65,7 +65,7 @@
   // *.env→ask) → глобальные permissions → правила агента. Выигрывает ПОСЛЕДНЕЕ
   // совпадение, поэтому широкое правило идёт первым, allow — после, deny — в конце.
   // ════════════════════════════════════════════════════════════════════════
-  "default_agent": "build",
+  "default_agent": "plan",
 
   "permissions": [
     { "action": "read", "resource": "*.env", "effect": "deny" },
@@ -287,6 +287,22 @@
         { "action": "shell", "resource": "mypy*", "effect": "allow" },
         { "action": "shell", "resource": "git diff*", "effect": "allow" },
         { "action": "shell", "resource": "git status*", "effect": "allow" },
+        { "action": "shell", "resource": "echo *", "effect": "allow" },
+        { "action": "shell", "resource": "echo", "effect": "allow" },
+        { "action": "shell", "resource": "which *", "effect": "allow" },
+        { "action": "shell", "resource": "ps *", "effect": "allow" },
+        { "action": "shell", "resource": "date", "effect": "allow" },
+        { "action": "shell", "resource": "date *", "effect": "allow" },
+        { "action": "shell", "resource": "diff *", "effect": "allow" },
+        { "action": "shell", "resource": "sort *", "effect": "allow" },
+        { "action": "shell", "resource": "uniq *", "effect": "allow" },
+        { "action": "shell", "resource": "timeout *", "effect": "allow" },
+        { "action": "shell", "resource": "python3 --version", "effect": "allow" },
+        { "action": "shell", "resource": "python --version", "effect": "allow" },
+        { "action": "shell", "resource": "stat *", "effect": "allow" },
+        { "action": "shell", "resource": "strings *", "effect": "allow" },
+        { "action": "shell", "resource": "python3 *", "effect": "allow" },
+        { "action": "shell", "resource": "python *", "effect": "allow" },
 
         { "action": "subagent", "resource": "*", "effect": "deny" },
         { "action": "question", "resource": "*", "effect": "deny" },
