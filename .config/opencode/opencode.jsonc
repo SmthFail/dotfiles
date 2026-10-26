@@ -1,63 +1,85 @@
 {
   // ГОТОВЫЙ ФАЙЛ ЦЕЛИКОМ — замена ~/.config/opencode/opencode.jsonc.
-  // Твои provider / model / small_model перенесены дословно.
+  // Твои провайдеры и модель перенесены дословно.
   // Если не хочешь заменять файл целиком — влей вручную 3 ключа из
   // opencode.agents.fragment.jsonc: default_agent, permissions, agents.
   // Перед заменой: cp ~/.config/opencode/opencode.jsonc ~/.config/opencode/opencode.jsonc.bak
   "$schema": "https://opencode.ai/config.json",
-  "provider": {
+  "providers": {
     "GPU_0123": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "Local vLLM",
-      "options": {
+      "package": "aisdk:@ai-sdk/openai-compatible",
+      "name": "Local vLLM GPU_0123",
+      "settings": {
         "baseURL": "http://10.55.228.60:8003/v1",
         "apiKey": "EMPTY",
         "max_tokens": 131072,
-        "extraBody": { "reasoning_effort": "high" }
+        "reasoningEffort": "high"
       },
       "models": {
-        "GLM-5.3-Flash-NVFP4": {
-
-          "name": "GLM-5.3-Flash",
-          "attachment": true,
-          "limit": {
-            "context": 1048576,
-            "output": 131072
-          },
-          "modalities": {
-            "input": ["text", "image"],
-            "output": ["text"]
-          }
+        "main": {
+          "modelID": "deepseek-v41-flash-1017",
+          "name": "DeepSeek-V4.1-Flash-1017",
+          "limit": { "context": 1048576, "output": 131072 },
+          "variants": [
+            { "id": "low",  "settings": { "reasoningEffort": "low" } },
+            { "id": "high", "settings": { "reasoningEffort": "high" } },
+            { "id": "xhigh","settings": { "reasoningEffort": "xhigh" } },
+            { "id": "max",  "settings": { "reasoningEffort": "max" } }
+          ],
+          "capabilities": { "tools": true, "input": ["text", "image"], "output": ["text"] }
         }
       }
     },
-    "GPU_45": {
-      "npm": "@ai-sdk/openai-compatible",
-      "name": "Local vLLM",
-      "options": {
+    "GPU_4": {
+      "package": "aisdk:@ai-sdk/openai-compatible",
+      "name": "Local vLLM GPU_4",
+      "settings": {
         "baseURL": "http://10.55.228.60:8002/v1",
         "apiKey": "EMPTY",
         "max_tokens": 131072,
-        "extraBody": { "reasoning_effort": "medium" }
+        "reasoningEffort": "medium"
       },
       "models": {
-        "Qwen3.8-Flash-Next_GPU4": {
+        "fast": {
+          "modelID": "Qwen3.8-Flash-Next_GPU4",
           "name": "Qwen3.8-Flash-Next",
-          "attachment": true,
-          "limit": {
-            "context": 262144,
-            "output": 131072
-          },
-          "modalities": {
-            "input": ["text", "image"],
-            "output": ["text"]
-          }
+          "limit": { "context": 262144, "output": 131072 },
+          "variants": [
+            { "id": "low",    "settings": { "reasoningEffort": "low" } },
+            { "id": "medium", "settings": { "reasoningEffort": "medium" } },
+            { "id": "high",   "settings": { "reasoningEffort": "high" } },
+            { "id": "xhigh",  "settings": { "reasoningEffort": "xhigh" } }
+          ],
+          "capabilities": { "tools": true, "input": ["text", "image"], "output": ["text"] }
+        }
+      }
+    },
+    "GPU_5": {
+      "package": "aisdk:@ai-sdk/openai-compatible",
+      "name": "Local vLLM GPU_5",
+      "settings": {
+        "baseURL": "http://10.55.228.60:8001/v1",
+        "apiKey": "EMPTY",
+        "max_tokens": 131072,
+        "reasoningEffort": "medium"
+      },
+      "models": {
+        "fast": {
+          "modelID": "Qwen3.8-Flash-Next_GPU5",
+          "name": "Qwen3.8-Flash-Next",
+          "limit": { "context": 262144, "output": 131072 },
+          "variants": [
+            { "id": "low",    "settings": { "reasoningEffort": "low" } },
+            { "id": "medium", "settings": { "reasoningEffort": "medium" } },
+            { "id": "high",   "settings": { "reasoningEffort": "high" } },
+            { "id": "xhigh",  "settings": { "reasoningEffort": "xhigh" } }
+          ],
+          "capabilities": { "tools": true, "input": ["text", "image"], "output": ["text"] }
         }
       }
     }
   },
-  "model": "GPU_0123/GLM-5.3-Flash-NVFP4",
-  "small_model": "GPU_45/Qwen3.8-Flash-Next_GPU4",
+  "model": "GPU_0123/main",
 
   // ════════════════════════════════════════════════════════════════════════
   // КАРКАС АГЕНТНОЙ СХЕМЫ
@@ -93,7 +115,7 @@
 
   "agents": {
     "build": {
-      "model": "GPU_0123/GLM-5.3-Flash-NVFP4",
+      "model": "GPU_0123/main",
       "permissions": [
         { "action": "subagent", "resource": "*", "effect": "deny" },
         { "action": "subagent", "resource": "cartographer", "effect": "allow" },
@@ -124,7 +146,7 @@
     },
 
     "plan": {
-      "model": "GPU_0123/GLM-5.3-Flash-NVFP4",
+      "model": "GPU_0123/main",
       "permissions": [
         { "action": "subagent", "resource": "*", "effect": "deny" },
         { "action": "subagent", "resource": "cartographer", "effect": "allow" },
@@ -155,7 +177,7 @@
 
     "cartographer": {
       "mode": "subagent",
-      "model": "GPU_45/Qwen3.8-Flash-Next_GPU4",
+      "model": "GPU_4/fast",
       "steps": 12,
       "permissions": [
         { "action": "edit", "resource": "*", "effect": "deny" },
@@ -185,7 +207,7 @@
 
     "scout": {
       "mode": "subagent",
-      "model": "GPU_45/Qwen3.8-Flash-Next_GPU4",
+      "model": "GPU_4/fast",
       "steps": 8,
       "permissions": [
         { "action": "edit", "resource": "*", "effect": "deny" },
@@ -205,7 +227,7 @@
 
     "writer": {
       "mode": "subagent",
-      "model": "GPU_0123/GLM-5.3-Flash-NVFP4",
+      "model": "GPU_0123/main",
       "steps": 16,
       "permissions": [
         { "action": "edit", "resource": "*", "effect": "ask" },
@@ -275,7 +297,7 @@
 
     "verifier": {
       "mode": "subagent",
-      "model": "GPU_45/Qwen3.8-Flash-Next_GPU4",
+      "model": "GPU_4/fast",
       "steps": 10,
       "permissions": [
         { "action": "edit", "resource": "*", "effect": "deny" },
@@ -348,7 +370,7 @@
 
     "reviewer": {
       "mode": "subagent",
-      "model": "GPU_45/Qwen3.8-Flash-Next_GPU4",
+      "model": "GPU_4/fast",
       "steps": 8,
       "permissions": [
         { "action": "edit", "resource": "*", "effect": "deny" },
@@ -367,6 +389,9 @@
         { "action": "skill", "resource": "ue-cpp", "effect": "allow" }
       ]
     },
+
+    "title": { "model": "GPU_5/fast" },
+    "summary": { "model": "GPU_5/fast" },
 
     "general": { "hidden": true },
     "explore": { "hidden": true }
