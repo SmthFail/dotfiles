@@ -47,7 +47,6 @@
           "variants": [
             { "id": "low",    "settings": { "reasoningEffort": "low" } },
             { "id": "medium", "settings": { "reasoningEffort": "medium" } },
-            { "id": "high",   "settings": { "reasoningEffort": "high" } },
             { "id": "xhigh",  "settings": { "reasoningEffort": "xhigh" } }
           ],
           "capabilities": { "tools": true, "input": ["text", "image"], "output": ["text"] }
@@ -71,7 +70,6 @@
           "variants": [
             { "id": "low",    "settings": { "reasoningEffort": "low" } },
             { "id": "medium", "settings": { "reasoningEffort": "medium" } },
-            { "id": "high",   "settings": { "reasoningEffort": "high" } },
             { "id": "xhigh",  "settings": { "reasoningEffort": "xhigh" } }
           ],
           "capabilities": { "tools": true, "input": ["text", "image"], "output": ["text"] }
@@ -123,8 +121,8 @@
         { "action": "subagent", "resource": "writer", "effect": "allow" },
         { "action": "subagent", "resource": "verifier", "effect": "allow" },
         { "action": "subagent", "resource": "reviewer", "effect": "allow" },
-        { "action": "subagent", "resource": "general", "effect": "ask" },
-        { "action": "subagent", "resource": "explore", "effect": "ask" },
+        { "action": "subagent", "resource": "general", "effect": "deny" },
+        { "action": "subagent", "resource": "explore", "effect": "deny" },
 
         { "action": "grep", "resource": "*", "effect": "deny" },
         { "action": "glob", "resource": "*", "effect": "deny" },
@@ -153,8 +151,8 @@
         { "action": "subagent", "resource": "scout", "effect": "allow" },
         { "action": "subagent", "resource": "verifier", "effect": "allow" },
         { "action": "subagent", "resource": "reviewer", "effect": "allow" },
-        { "action": "subagent", "resource": "general", "effect": "ask" },
-        { "action": "subagent", "resource": "explore", "effect": "ask" },
+        { "action": "subagent", "resource": "general", "effect": "deny" },
+        { "action": "subagent", "resource": "explore", "effect": "deny" },
 
         { "action": "grep", "resource": "*", "effect": "deny" },
         { "action": "glob", "resource": "*", "effect": "deny" },
@@ -208,7 +206,7 @@
     "scout": {
       "mode": "subagent",
       "model": "GPU_4/fast",
-      "steps": 8,
+      "steps": 10,
       "permissions": [
         { "action": "edit", "resource": "*", "effect": "deny" },
         { "action": "edit", "resource": ".agent/notes/**", "effect": "allow" },
@@ -227,10 +225,9 @@
 
     "writer": {
       "mode": "subagent",
-      "model": "GPU_0123/main",
+      "model": "GPU_5/fast",
       "steps": 16,
       "permissions": [
-        { "action": "edit", "resource": "*", "effect": "ask" },
         { "action": "edit", "resource": "*", "effect": "allow" },
         { "action": "edit", "resource": "external/**", "effect": "deny" },
         { "action": "edit", "resource": "**/dist/**", "effect": "deny" },
@@ -298,7 +295,7 @@
     "verifier": {
       "mode": "subagent",
       "model": "GPU_4/fast",
-      "steps": 10,
+      "steps": 12,
       "permissions": [
         { "action": "edit", "resource": "*", "effect": "deny" },
         { "action": "edit", "resource": ".agent/verdicts/**", "effect": "allow" },
@@ -340,6 +337,12 @@
         { "action": "shell", "resource": "strings *", "effect": "allow" },
         { "action": "shell", "resource": "python3 *", "effect": "allow" },
         { "action": "shell", "resource": "python *", "effect": "allow" },
+        { "action": "shell", "resource": "git commit*", "effect": "deny" },
+        { "action": "shell", "resource": "git checkout*", "effect": "deny" },
+        { "action": "shell", "resource": "git restore*", "effect": "deny" },
+        { "action": "shell", "resource": "git stash*", "effect": "deny" },
+        { "action": "shell", "resource": "git switch*", "effect": "deny" },
+        { "action": "shell", "resource": "git revert*", "effect": "deny" },
         { "action": "shell", "resource": "rm *", "effect": "deny" },
         { "action": "shell", "resource": "rm", "effect": "deny" },
         { "action": "shell", "resource": "sudo *", "effect": "deny" },
@@ -370,8 +373,8 @@
 
     "reviewer": {
       "mode": "subagent",
-      "model": "GPU_4/fast",
-      "steps": 8,
+      "model": "GPU_0123/main",
+      "steps": 10,
       "permissions": [
         { "action": "edit", "resource": "*", "effect": "deny" },
         { "action": "edit", "resource": ".agent/verdicts/**", "effect": "allow" },
